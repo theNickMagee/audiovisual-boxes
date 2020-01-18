@@ -1,0 +1,74 @@
+import ddf.minim.*;
+import ddf.minim.ugens.*;
+
+Minim minim;
+AudioInput in;
+
+float x,y,z;
+int totalwidth = 5;
+int totalheight = 13;
+//float shapez = 40;
+float sidel = 40;
+float ix;
+float x2;
+float iy;
+float y2;
+boolean slopeP = true;
+int changes_in_slope = 0;
+float freq_res;
+float vol_res;
+
+ArrayList<Rect> rows = new ArrayList<Rect>();
+
+void setup() {
+  size(800,800,P3D);
+  x = 50;
+  y = height/2 + height/4;
+  z = 0;
+  stroke(255);
+  translate(x,y,z);
+  rotateY(PI/2);
+  noFill();
+  for (int i = 0; i < totalwidth; i++){
+    for (int j = 0; j < totalheight; j++){     
+      rows.add(new Rect(i, j+2, sidel));
+    }
+  }
+  minim = new Minim(this);
+  in = minim.getLineIn(Minim.STEREO, 2048);
+  freq_res = 700 / totalheight;
+  vol_res = 120 / totalwidth;
+}
+
+void draw() {
+  background(0);
+  //fill(255);
+  translate(x,y,z);
+  rotateX(PI/2);
+  rotateZ(-PI/2);
+  //rotateY(-0.1);
+  //rotateY(PI/6);
+  //rectMode(CENTER);
+  //rect(0,0,100,100);
+  for(int i = 0; i < in.left.size()-1 ; i++){
+    if (slopeP == true){
+      if(in.left.get(i+ 1) - in.left.get(i) < -0.00009){
+        slopeP = false;
+        changes_in_slope +=1;
+      }
+    
+    }else{
+      if(in.left.get(i+ 1) - in.left.get(i) > 0.000009){
+        slopeP = true;
+        changes_in_slope +=1;
+      }
+    }
+  }
+  for (Rect r: rows){
+        r.display();
+  }
+  
+  changes_in_slope = 0;
+ 
+  
+}
