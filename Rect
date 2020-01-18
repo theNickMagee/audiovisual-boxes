@@ -1,0 +1,100 @@
+class Rect {
+  int i, j;  
+  float sidel;
+  boolean elevated;
+  float shapez;
+  boolean max;
+  float volume;
+  
+  public Rect(int _i, int _j, float _sidel){
+    i = _i;
+    j = _j;
+    sidel = _sidel;
+    shapez = 40;
+  }
+  
+  void display()  {
+    volume = (in.left.level() + in.right.level())*1000;
+    if (changes_in_slope > j*(freq_res) && changes_in_slope < (j+1)*(freq_res) && !max){
+        shapez += (in.left.level() + in.right.level())*200;
+       // println((in.left.level() + in.right.level()));
+       
+      }
+      if ((changes_in_slope > (j-1)*(freq_res) && changes_in_slope < (j)*(freq_res) && !max) ||(changes_in_slope > (j+1)*(freq_res) && changes_in_slope < (j+2)*(freq_res) && !max)){
+        shapez += (in.left.level() + in.right.level())*100;
+       // println((in.left.level() + in.right.level()));
+      }
+     if (volume > i*(vol_res) && volume < (i+1)*(vol_res) && !max  && i != 0){
+        shapez += 7;
+       // println((in.left.level() + in.right.level()));
+       
+      }
+     if (shapez > 40){
+       elevated = true;
+       if (shapez <= 46){
+         shapez = 40;
+       }else{
+         shapez-=6;
+       }
+     }else{
+       shapez = 40;
+     }
+     if (shapez > 350){
+       max = true;
+     }else{
+       max = false;
+     }
+    beginShape(QUADS);
+      ix = i * sidel;
+      x2 = sidel + i * sidel;
+      iy = j * sidel;
+      y2 = sidel + j * sidel;
+      
+      //BOTTOM SIDE
+      fill(255);
+      vertex(ix, iy, 0);
+      vertex(ix,y2,0);
+      vertex(x2,y2,0);
+      vertex(x2,iy,0);
+      
+      //LEFT SIDE
+      fill(0, 0, 250);
+      vertex(ix, iy, 0);
+      vertex(ix,iy, shapez);
+      vertex(x2,iy,shapez);
+      vertex(x2,iy,0);
+      
+      //FRONT SIDE
+      fill(255, 0, 0);
+      vertex(ix, iy, 0);
+      vertex(ix,iy, shapez);
+      vertex(ix,y2,shapez);
+      vertex(ix,y2,0);
+      
+      //BACK SIDE
+      fill(0, 255, 0);
+      vertex(ix,y2,0);
+      vertex(ix,y2,shapez);
+      vertex(x2,y2,shapez);
+      vertex(x2,y2,0);
+      
+      //RIGHT SIDE
+      fill(255, 0, 0);
+      vertex(x2,y2,0);
+      vertex(x2,iy,0);
+      vertex(x2,iy,shapez);
+      vertex(x2,y2,shapez);
+      
+      //TOP
+      fill(250);
+      vertex(ix,iy,shapez);
+      vertex(x2,iy,shapez);
+      vertex(x2,y2,shapez);
+      vertex(ix,y2,shapez);
+      
+      
+      endShape();
+      
+      
+  }
+}
